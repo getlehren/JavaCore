@@ -14,13 +14,29 @@ public class AppData {
         File doc = new File(name + ".csv");
         doc.createNewFile();
         try (BufferedWriter out = new BufferedWriter(new FileWriter(doc))) {
-            out.write("SideOne;SideTwo;SideThree");
+            for (String header : headers) {
+                out.write(header + ";");
+            }
+            out.write("\n");
         }
     }
 
-    public void addDataToFile(int sideOne, int sideTwo, int sideThree, String filename) throws IOException {
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".csv", true))) {
-            out.write("\n" + sideOne + ";" + sideTwo + ";" + sideThree);
+    public void addDataToFile(int[] line, String filename) throws IOException {
+        fileLoader(filename);
+        if (headers == null) {
+            headers = new String[line.length];
+            for (int i = 0; i < headers.length; i++) {
+                headers[i] = "Header " + i;
+            }
+            createNewDocument("data");
+        }
+        if (headers.length >= line.length) {
+            try (BufferedWriter out = new BufferedWriter(new FileWriter(filename + ".csv", true))) {
+                for (int val : line) {
+                    out.write(val + ";");
+                }
+                out.write("\n");
+            }
         }
     }
 
@@ -45,19 +61,6 @@ public class AppData {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void printFile(){
-        for (String head:headers) {
-            System.out.print(head + ";");
-        }
-        System.out.println("");
-        for (int[] a : data) {
-            for (int i : a) {
-                System.out.print(i + ";");
-            }
-            System.out.println("");
         }
     }
 }
