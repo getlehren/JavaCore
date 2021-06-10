@@ -1,7 +1,7 @@
-package ru.getman.java.core.awesome_project.model;
+package ru.getman.java.core.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ru.getman.java.core.awesome_project.GlobalState;
+import ru.getman.java.core.project.GlobalState;
 
 public class DailyForecast {
     @JsonProperty(value = "Date")
@@ -12,6 +12,19 @@ public class DailyForecast {
     private Day day;
     @JsonProperty(value = "Night")
     private Night night;
+
+    private String city = GlobalState.getInstance().getSelectedCity();
+
+    public DailyForecast(String date, Temperature temperature, Day day, Night night, String city) {
+        this.date = date;
+        this.temperature = temperature;
+        this.day = day;
+        this.night = night;
+        this.city = city;
+    }
+
+    public DailyForecast() {
+    }
 
     public String getDate() {
         return date;
@@ -45,11 +58,19 @@ public class DailyForecast {
         this.night = night;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
-        return "В городе " + GlobalState.getInstance().getSelectedCity() + " на дату: " + date
+        return "В городе " + city + " на дату: " + date
                 + "\nОжидается: \nДнем: " + day.getIconPhrase()
                 + "\nНочью: " + night.getIconPhrase()
-                + "\nТемпература от " + temperature.getMin().getValue() + " до " + temperature.getMax().getValue() + "\n";
+                + "\nТемпература от " + temperature.getMaximum().getValue() + " до " + temperature.getMinimum().getValue() + "\n";
     }
 }

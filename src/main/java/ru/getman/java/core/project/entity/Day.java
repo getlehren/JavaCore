@@ -1,10 +1,17 @@
-package ru.getman.java.core.awesome_project.model;
+package ru.getman.java.core.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Night {
+public class Day {
     @JsonProperty(value = "IconPhrase")
     private String iconPhrase;
+
+    public Day(String iconPhrase) {
+        this.iconPhrase = iconPhrase;
+    }
+
+    public Day() {
+    }
 
     public String getIconPhrase() {
         return iconPhrase;

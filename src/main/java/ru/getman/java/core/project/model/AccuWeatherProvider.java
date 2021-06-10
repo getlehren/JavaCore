@@ -1,4 +1,4 @@
-package ru.getman.java.core.awesome_project.model;
+package ru.getman.java.core.project.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,7 +9,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import ru.getman.java.core.awesome_project.GlobalState;
+import ru.getman.java.core.project.GlobalState;
+import ru.getman.java.core.project.entity.DailyForecast;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +28,7 @@ public class AccuWeatherProvider implements IWeatherProvider {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void getWeather(Period period) {
+    public List<DailyForecast> getWeather(Period period) throws IOException {
         String key = detectCityKeyByName();
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
@@ -53,14 +54,10 @@ public class AccuWeatherProvider implements IWeatherProvider {
 
         Request request = getRequest(url);
 
-        try {
-            fancyResponsePrint(request);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getDailyForecastList(request);
     }
 
-    private void fancyResponsePrint(Request request) throws IOException {
+    private List<DailyForecast> getDailyForecastList(Request request) throws IOException {
         Response response = okHttpClient.newCall(request).execute();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String jsonResponse = response.body().string();
@@ -70,9 +67,7 @@ public class AccuWeatherProvider implements IWeatherProvider {
                 objectMapper.readValue(jsonNode.toString(), new TypeReference<List<DailyForecast>>() {
                 });
 
-        for (DailyForecast forecast : forecastList) {
-            System.out.println(forecast);
-        }
+        return forecastList;
     }
 
     @NotNull

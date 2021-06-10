@@ -1,8 +1,8 @@
-package ru.getman.java.core.awesome_project.view;
+package ru.getman.java.core.project.view;
 
-import ru.getman.java.core.awesome_project.GlobalState;
-import ru.getman.java.core.awesome_project.controller.IWeatherController;
-import ru.getman.java.core.awesome_project.controller.WeatherController;
+import ru.getman.java.core.project.GlobalState;
+import ru.getman.java.core.project.controller.IWeatherController;
+import ru.getman.java.core.project.controller.WeatherController;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class UserInterface implements IUserInterface {
             checkIsExit(userInput);
             GlobalState.getInstance().setSelectedCity(userInput);
 
-            System.out.println("Введите команду: \n1. - погода на 1 день\n2. - погода на 5 дней");
+            System.out.println("Введите команду: \n1. - погода на 1 день\n2. - погода на 5 дней\n3. - погода из базы данных");
             String command = scanner.nextLine();
 
             try {
@@ -47,9 +47,8 @@ public class UserInterface implements IUserInterface {
         if (command == null || command.length() != 1) {
             throw new Exception("Невалидный ввод");
         }
-        int answer = 0;
         try {
-            answer = Integer.parseInt(command);
+            Integer.parseInt(command);
         } catch (NumberFormatException e) {
             throw new Exception("Невалидный ввод");
         }
