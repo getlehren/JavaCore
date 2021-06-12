@@ -5,15 +5,20 @@ import java.util.List;
 
 public class StudentImpl implements Student {
 
-    List<Course> courseList = new ArrayList<>();
+    private List<Course> courseList = new ArrayList<>();
+    private String name;
 
     public void setCourseList(List<Course> courseList) {
         this.courseList = courseList;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override

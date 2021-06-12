@@ -3,7 +3,7 @@ package ru.getman.java.core;
 import java.util.Objects;
 
 public class CourseImpl implements Course {
-    String name;
+    private String name;
 
     public CourseImpl(String name) {
         this.name = name;
